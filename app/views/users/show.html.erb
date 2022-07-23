@@ -1,0 +1,98 @@
+<script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.js"></script>
+<div class="user-profile">
+  <div class="top">
+    <div class="settings">
+      Einstellungen:
+      <br>
+      Googlesheet URL:
+      <%= simple_form_for @user do |f| %>
+        <%= f.input :sheet_url, default: @user.sheet_url, label: false %>
+        <%= f.submit 'Url speichern', class: 'save button' %>
+      <% end %>
+      <% if @user.sheet_url %>
+        <%= link_to 'Wörter vom Googlesheet herunterladen', auths_google_sign_in_path, class: 'save button' %>
+      <% end %>
+    </div>
+
+    <% if @download && @words_stats %>
+      Neuen Wörterdownload entdeckt!
+      <div class="words-stats">
+        <% if @words_stats.same_length %>
+          Die Wörter sind alle gleich lang! 👌
+        <% else %>
+          Die Wörter sind nicht alle gleich lang! 🤔
+        <% end %>
+      </div>
+      <div class="sorting">
+        Sortieren:
+        <br>
+        <div class="length-filter filter button">
+          Länge 📏
+        </div>
+        <div class="new-word-filter filter button">
+          Neue Wörter 🔥
+        </div>
+      </div>
+      <div class="words iso-grid">
+        <% @batch.words.each do |word| %>
+          <div class="word iso-element <%= new_word?(word, @batch) %>" data-length="<%= word.value.length %>">
+            <%= word.value %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  <div class="bottom">
+    <% if @user.batches.count > 1 %>
+      Du hast <%= @batches.count %> Wortgruppe<%= 'n' if @batches.count > 1 %> herunter geladen
+      <br>
+      <% @batches.each do |batch| %>
+        <%= batch.created_at.strftime('%m-%e-%y %H:%M') %>
+        <div class="words">
+          <% batch.words.each do |word| %>
+            <div class="word">
+              <%= word.value %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<script>
+  let targetGrid = document.querySelector('.iso-grid')
+    if(targetGrid) {
+      let iso = new Isotope( '.iso-grid', {
+      itemSelector: '.iso-element',
+      layoutMode: 'fitRows',
+      getSortData: {
+        length: '[data-length]',
+        newWord: '.new-word'
+      }
+    });
+    const lengthBtn = document.querySelector('.length-filter')
+    const newWordBtn = document.querySelector('.new-word-filter')
+
+    newWordBtn.addEventListener("click", () => {
+      if(iso.element.dataset.filteredBy === 'new-word') {
+        iso.element.dataset.filteredBy = undefined
+        iso.arrange({filter: '*'})
+      } else {
+        console.log('sorting')
+        iso.element.dataset.filteredBy = 'new-word'
+        iso.arrange({filter: '.new-word'})
+      }
+    })
+
+    lengthBtn.addEventListener("click", () => {
+      if(iso.element.dataset.sortedBy === 'length') {
+        iso.element.dataset.sortedBy = undefined
+        iso.shuffle()
+      } else {
+        console.log('sorting')
+        iso.element.dataset.sortedBy = 'length'
+        iso.arrange({sortBy: 'length'})
+      }
+    })
+  }
+</script>
