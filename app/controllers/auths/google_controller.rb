@@ -24,7 +24,7 @@ class Auths::GoogleController < ApplicationController
   def fetch_words(google_session)
     sheet = google_session.spreadsheet_by_url(current_user.sheet_url)
     batch = Batch.create(user: current_user)
-    sheet.worksheets.first.rows.flatten.each do |word|
+    sheet.worksheets.first.rows.flatten.reject(&:empty?).each do |word|
       word = Word.find_or_initialize_by(value: word)
       word.user = current_user unless word.user.present?
       word.save
