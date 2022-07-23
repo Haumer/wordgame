@@ -4,6 +4,7 @@
   "dependencies": {
     "@hotwired/turbo-rails": "hotwired/turbo-rails",
     "@rails/webpacker": "^6.0.0-rc.6",
+    "hotwire": "^0.0.1",
     "isotope-layout": "^3.0.6",
     "webpack": "^5.53.0",
     "webpack-cli": "^4.8.0"
