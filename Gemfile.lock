@@ -225,10 +225,12 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.13.7-x86_64-darwin)
       racc (~> 1.4)
+    nokogiri (1.13.7-x86_64-linux)
+      racc (~> 1.4)
     orm_adapter (0.5.0)
     os (1.1.4)
     pg (1.4.1)
-    popper_js (2.9.3)
+    popper_js (2.11.5)
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -318,7 +320,7 @@ GEM
       railties (>= 6.0.0)
     strscan (3.0.3)
     thor (1.2.1)
-    tilt (2.0.10)
+    tilt (2.0.11)
     timeout (0.3.0)
     trailblazer-option (0.1.2)
     turbo-rails (1.1.1)
@@ -350,6 +352,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-21
+  x86_64-linux
 
 DEPENDENCIES
   autoprefixer-rails (= 10.2.5)
